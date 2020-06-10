@@ -1,3 +1,4 @@
+# 对列与栈 --》 解码
 '''
 class Solution:
     def decodeString(self, s: str) -> str:
@@ -17,6 +18,7 @@ class Solution:
         return res
 '''
 
+'''
 class Solution:
     def decodeString(self, s: str) -> str:
         def dfs(s, i):
@@ -35,3 +37,41 @@ class Solution:
                 i += 1
             return res
         return dfs(s, 0)
+'''
+
+
+
+
+
+# 2020.06.10 
+class Solution:
+    def decodeString(self, s: str) -> str:
+        stack = []
+        result = ''
+        local = ''
+        times = ''
+        for c in s:
+            if c != ']':
+                stack.append(c)
+            else: # to have a local decode
+                # note order
+                #local = local + c 
+                c = stack.pop()
+                while c != '[': 
+                    local = c + local
+                    c = stack.pop()
+                c = stack.pop()
+                while c.isdigit():
+                    times = c + times
+                    c = stack.pop()
+                stack.append(c)
+                local = int(times) * local
+                for c in local:
+                    stack.append(c)
+                local = ''
+                times = ''
+        while len(stack) > 0:
+            c = stack.pop()
+            result = c + result
+        return result
+                
